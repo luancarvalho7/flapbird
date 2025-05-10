@@ -300,50 +300,48 @@ map = [
 //current score, top score, tracker
 score = {
     current: 0,
-    best: null, // DO THIS STRETCH GOAL
-    //values for drawing mapped numbers on canvas
+    best: 0,
     x: cvs.width/2,
     y: 40,
     w: 15,
     h: 25,
     reset: function() {
-        this.current = 0
+        if (this.current > this.best) {
+            this.best = this.current;
+            // Update the high score display
+            document.getElementById('highScore').textContent = this.best;
+        }
+        this.current = 0;
     },
-    //display the score
     render: function() {
         if (gameState.current == gameState.play ||
             gameState.current == gameState.gameOver) {
-            //change current score number value to string value and access each place value
-            let string = this.current.toString()
-            let ones = string.charAt(string.length-1)
-            let tens = string.charAt(string.length-2)
-            let hundreds = string.charAt(string.length-3)
+            let string = this.current.toString();
+            let ones = string.charAt(string.length-1);
+            let tens = string.charAt(string.length-2);
+            let hundreds = string.charAt(string.length-3);
 
-            //if current score has thousands place value: the game is over
             if (this.current >= 1000) {
-                gameState.current = gameState.gameOver
-            
-            //if current score has ones, tens, and hundreds place value only
+                gameState.current = gameState.gameOver;
             } else if (this.current >= 100) {
-                ctx.drawImage(theme2, map[ones].imgX,map[ones].imgY,map[ones].width,map[ones].height, ( (this.x-this.w/2) + (this.w) + 3 ),this.y,this.w,this.h)
-
-                ctx.drawImage(theme2, map[tens].imgX,map[tens].imgY,map[tens].width,map[tens].height, ( (this.x-this.w/2) ),this.y,this.w,this.h)
-
-                ctx.drawImage(theme2, map[hundreds].imgX,map[hundreds].imgY,map[hundreds].width,map[hundreds].height, (   (this.x-this.w/2) - (this.w) - 3 ),this.y,this.w,this.h)
-
-            //if current score has ones and tens place value only
+                ctx.drawImage(theme2, map[ones].imgX,map[ones].imgY,map[ones].width,map[ones].height, ( (this.x-this.w/2) + (this.w) + 3 ),this.y,this.w,this.h);
+                ctx.drawImage(theme2, map[tens].imgX,map[tens].imgY,map[tens].width,map[tens].height, ( (this.x-this.w/2) ),this.y,this.w,this.h);
+                ctx.drawImage(theme2, map[hundreds].imgX,map[hundreds].imgY,map[hundreds].width,map[hundreds].height, ( (this.x-this.w/2) - (this.w) - 3 ),this.y,this.w,this.h);
             } else if (this.current >= 10) {
-                ctx.drawImage(theme2, map[ones].imgX,map[ones].imgY,map[ones].width,map[ones].height, ( (this.x-this.w/2) + (this.w/2) + 3 ),this.y,this.w,this.h)
-
-                ctx.drawImage(theme2, map[tens].imgX,map[tens].imgY,map[tens].width,map[tens].height, ( (this.x-this.w/2) - (this.w/2) - 3 ),this.y,this.w,this.h)
-            
-            //if current score has ones place value only
+                ctx.drawImage(theme2, map[ones].imgX,map[ones].imgY,map[ones].width,map[ones].height, ( (this.x-this.w/2) + (this.w/2) + 3 ),this.y,this.w,this.h);
+                ctx.drawImage(theme2, map[tens].imgX,map[tens].imgY,map[tens].width,map[tens].height, ( (this.x-this.w/2) - (this.w/2) - 3 ),this.y,this.w,this.h);
             } else {
-                ctx.drawImage(theme2, map[ones].imgX,map[ones].imgY,map[ones].width,map[ones].height, ( this.x-this.w/2 ),this.y,this.w,this.h)
+                ctx.drawImage(theme2, map[ones].imgX,map[ones].imgY,map[ones].width,map[ones].height, ( this.x-this.w/2 ),this.y,this.w,this.h);
+            }
+
+            // Update the final score display when game is over
+            if (gameState.current == gameState.gameOver) {
+                document.getElementById('finalScore').textContent = this.current;
+                document.getElementById('gameOverScreen').style.display = 'block';
             }
         }
     }
-}    
+}
 //bird : YELLOW BIRD
 bird = {
     animation: [
@@ -701,43 +699,39 @@ setInterval(loop, 17)
 *************************/
 //on mouse click // tap screen
 cvs.addEventListener('click', () => {
-    //if ready screen >> go to play state
     if (gameState.current == gameState.getReady) {
-        gameState.current = gameState.play
+        gameState.current = gameState.play;
+        document.getElementById('gameOverScreen').style.display = 'none';
     }
-    //if play state >> bird keeps flying
     if (gameState.current == gameState.play) {
-        bird.flap()
-        SFX_FLAP.play()
-        description.style.visibility = "hidden"
+        bird.flap();
+        SFX_FLAP.play();
+        description.style.visibility = "hidden";
     }
-    //if game over screen >> go to ready screen
     if (gameState.current == gameState.gameOver) {
-        pipes.reset()
-        score.reset()
-        gameState.current = gameState.getReady
-        SFX_SWOOSH.play()
+        pipes.reset();
+        score.reset();
+        gameState.current = gameState.getReady;
+        SFX_SWOOSH.play();
     }
-})
-//on spacebar
+});
+
 document.body.addEventListener('keydown', (e) => {
-    //if ready screen >> go to play state
     if (e.keyCode == 32) {
         if (gameState.current == gameState.getReady) {
-            gameState.current = gameState.play
+            gameState.current = gameState.play;
+            document.getElementById('gameOverScreen').style.display = 'none';
         }
-        //if play state >> bird keeps flying
         if (gameState.current == gameState.play) {
-            bird.flap()
-            SFX_FLAP.play()
-            description.style.visibility = "hidden"
+            bird.flap();
+            SFX_FLAP.play();
+            description.style.visibility = "hidden";
         }
-        //if game over screen >> go to ready screen
         if (gameState.current == gameState.gameOver) {
-            pipes.reset()
-            score.reset()
-            SFX_SWOOSH.play()
-            gameState.current = gameState.getReady
+            pipes.reset();
+            score.reset();
+            SFX_SWOOSH.play();
+            gameState.current = gameState.getReady;
         }
     }
-})
+});
