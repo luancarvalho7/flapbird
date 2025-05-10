@@ -27,27 +27,62 @@ body {
     top: 10px;
 }
 .game-screen {
-    /* background-color: rgb(69, 184, 194); */
     width: 300px;
     height: 500px;
     margin: 0 auto;
     position: relative;
     top: 50px;
 }
-    canvas {
-        background-color: 
-        black
-        /* #00bbc4 */
-        /* #d2ce89 */
-        ;
-        display: block;
-        width: 300px;
-        height: 500px;
-        margin: 0 auto;
-        border-radius: 10px;
-    }
-    .game-description {
-        color: #f0f0f0;
-        line-height: 2em;
-        text-align: center;
-    }
+canvas {
+    background-color: black;
+    display: block;
+    width: 300px;
+    height: 500px;
+    margin: 0 auto;
+    border-radius: 10px;
+}
+.game-description {
+    color: #f0f0f0;
+    line-height: 2em;
+    text-align: center;
+}
+
+.game-over-screen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    display: none;
+}
+
+.game-over-screen h2 {
+    color: #ff4444;
+    font-family: 'Carter One', cursive;
+    font-size: 2em;
+    margin: 0 0 15px 0;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
+}
+
+.game-over-screen .score {
+    color: #fff;
+    font-size: 1.5em;
+    margin: 10px 0;
+    font-family: 'Carter One', cursive;
+}
+
+.game-over-screen .high-score {
+    color: #ffd700;
+    font-size: 1.2em;
+    margin: 10px 0;
+    font-family: 'Carter One', cursive;
+}
+
+.game-over-screen .restart-text {
+    color: #8bc34a;
+    font-size: 1em;
+    margin-top: 15px;
+}
